@@ -1,52 +1,68 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const WelcomeScreen = ({ onStart, onReset }) => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
-    <div className="glass-panel center-content welcome-panel">
-      <h1 style={{ fontSize: '3rem', marginBottom: '40px' }}>Imposter Game</h1>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
-        <button onClick={() => onStart('CATEGORIES')} style={{ padding: '20px', fontSize: '1.2rem' }}>
-          Play with Preset Categories
+    <div className="w-full max-w-md flex flex-col items-center justify-center space-y-12 animate-fade-in">
+      <h1 className="text-6xl font-extrabold text-primary tracking-tighter">
+        IMPOSTER
+      </h1>
+
+      <div className="flex flex-col gap-6 w-full">
+        <button
+          onClick={() => onStart("CATEGORIES")}
+          className="w-full py-5 px-6 bg-primary text-white text-xl font-bold uppercase tracking-widest hover:bg-red-700 transition-colors duration-200 shadow-none border-none rounded-sm"
+        >
+          Preset Categories
         </button>
-        
-        <button onClick={() => onStart('CUSTOM')} style={{ padding: '20px', fontSize: '1.2rem' }}>
-          Play with Custom Words
+
+        <button
+          onClick={() => onStart("CUSTOM")}
+          className="w-full py-5 px-6 border-2 border-primary text-primary text-xl font-bold uppercase tracking-widest hover:bg-red-50 transition-colors duration-200 shadow-none rounded-sm"
+        >
+          Custom Words
         </button>
-        
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+
+        <div className="mt-8 text-center">
           {showConfirm ? (
-            <div className="glass-panel" style={{ 
-              position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', 
-              zIndex: 1000, padding: '20px', border: '1px solid var(--danger)', width: '300px',
-              background: '#2d1b4e' 
-            }}>
-              <h3>Reset Data?</h3>
-              <p>This will erase all players and settings.</p>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                 <button onClick={onReset} className="danger" style={{background: 'var(--danger)'}}>Yes, Reset</button>
-                 <button onClick={() => setShowConfirm(false)} className="secondary">Cancel</button>
+            <div className="bg-white border-2 border-primary p-6 rounded-sm w-full mx-auto shadow-none">
+              <h3 className="text-primary text-lg font-bold mb-2">
+                ERASE ALL DATA?
+              </h3>
+              <p className="text-sm text-gray-600 mb-6">
+                This cannot be undone.
+              </p>
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={onReset}
+                  className="bg-primary text-white px-6 py-3 font-bold uppercase text-sm rounded-sm hover:bg-red-700"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="border border-gray-300 text-gray-500 px-6 py-3 font-bold uppercase text-sm rounded-sm hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           ) : (
-            <button 
-              onClick={() => setShowConfirm(true)} 
-              className="secondary danger" 
-              style={{ fontSize: '0.9rem', padding: '10px', width: 'auto', border: '1px solid var(--danger)', color: 'white' }}
+            <button
+              onClick={() => setShowConfirm(true)}
+              className="text-gray-400 text-xs uppercase tracking-wider font-semibold hover:text-primary transition-colors"
             >
-              Reset All Saved Data
+              Reset Saved Data
             </button>
           )}
         </div>
-        </div>
+      </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: '20px', fontSize: '0.8rem', opacity: 0.7 }}>
-        Credits to <a href="https://github.com/DahamDissanayake/Imposter-Game-But-Customized" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)', textDecoration: 'none' }}>DAMA</a>
+      <div className="mt-auto pt-8 text-xs text-gray-400">
+        Design by <span className="font-bold text-gray-500">DAMA</span>
       </div>
     </div>
-
   );
 };
 

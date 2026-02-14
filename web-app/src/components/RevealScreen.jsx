@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const RevealScreen = ({ player, role, wordData, onNext, onSkip, onHome }) => {
   const [showSkipConfirm, setShowSkipConfirm] = useState(false);
@@ -9,108 +9,162 @@ const RevealScreen = ({ player, role, wordData, onNext, onSkip, onHome }) => {
   const handleEnd = () => setIsRevealed(false);
 
   // Defensive Check
-  if (!player) return <div className="glass-panel center-content"><h1>Error: No Player Found</h1><button onClick={onNext}>Next</button></div>;
-  if (!wordData && role !== 'IMPOSTER') return <div className="glass-panel center-content"><h1>Error: No Word Data</h1><button onClick={onSkip}>Skip Round</button></div>;
+  if (!player)
+    return (
+      <div className="p-10 text-center">
+        <h1 className="text-primary font-bold">Error: No Player Found</h1>
+        <button onClick={onNext} className="mt-4 px-4 py-2 bg-gray-200">
+          Next
+        </button>
+      </div>
+    );
+  if (!wordData && role !== "IMPOSTER")
+    return (
+      <div className="p-10 text-center">
+        <h1 className="text-primary font-bold">Error: No Word Data</h1>
+        <button onClick={onSkip} className="mt-4 px-4 py-2 bg-gray-200">
+          Skip Round
+        </button>
+      </div>
+    );
 
   return (
-    <div className="glass-panel center-content" style={{ userSelect: 'none' }}>
-      <h1>{player}</h1>
-      <p>Press and HOLD the button to see your secret role.</p>
-      
-      <div style={{ height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {isRevealed ? (
-          <div>
-            {role === 'IMPOSTER' ? (
-              <div className="imposter-reveal">
-                YOU ARE THE IMPOSTER!<br/>
-                <span style={{fontSize: '1rem', color: 'white'}}>
-                   Hint: {wordData?.hint || "No hint available"}
-                </span>
-              </div>
-            ) : (
-              <div className="civilian-reveal">
-                Word: {wordData?.word || "Error"}
-              </div>
-            )}
-          </div>
-        ) : (
-          <h1 style={{ color: '#555' }}>???</h1>
-        )}
+    <div className="w-full max-w-md flex flex-col items-center animate-fade-in select-none p-6">
+      <h1 className="text-4xl font-extrabold text-gray-900 mb-2">{player}</h1>
+      <p className="text-sm text-gray-500 uppercase tracking-widest mb-8">
+        Role Reveal
+      </p>
+
+      <div className="w-full h-48 mb-8 relative">
+        <div
+          className={`w-full h-full rounded-sm flex flex-col items-center justify-center border-4 py-4 px-6 transition-all duration-200 ${
+            isRevealed
+              ? role === "IMPOSTER"
+                ? "bg-primary border-primary"
+                : "bg-white border-primary"
+              : "bg-gray-100 border-gray-200"
+          }`}
+        >
+          {isRevealed ? (
+            <div className="text-center animate-fade-in">
+              {role === "IMPOSTER" ? (
+                <>
+                  <div className="text-5xl font-black text-white mb-2 leading-none">
+                    IMPOSTER
+                  </div>
+                  <div className="text-white text-opacity-90 font-medium">
+                    Hint: {wordData?.hint || "No hint available"}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-sm text-gray-500 uppercase tracking-widest mb-1">
+                    Your Word
+                  </div>
+                  <div className="text-4xl font-black text-primary leading-none">
+                    {wordData?.word || "Error"}
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <h1 className="text-6xl font-black text-gray-300">???</h1>
+          )}
+        </div>
       </div>
 
-      <button 
+      <button
         onMouseDown={handleStart}
         onMouseUp={handleEnd}
         onMouseLeave={handleEnd}
         onTouchStart={handleStart}
         onTouchEnd={handleEnd}
-        style={{ 
-          background: isRevealed ? '#333' : 'var(--primary-color)',
-          height: '80px',
-          fontSize: '1.2rem'
-        }}
+        className={`w-full py-6 font-bold text-xl uppercase tracking-widest rounded-sm transition-all duration-100 shadow-md active:scale-95 touch-manipulation mb-10 ${
+          isRevealed ? "bg-gray-800 text-white" : "bg-primary text-white"
+        }`}
       >
-        HOLD TO VIEW
+        {isRevealed ? "REVEALING..." : "HOLD TO VIEW"}
       </button>
 
       {/* Action Buttons & Modals */}
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '30px' }}>
-        
+      <div className="w-full flex flex-col gap-3">
         {/* Skip Modal */}
-        {showSkipConfirm ? (
-          <div className="glass-panel" style={{ 
-            position: 'absolute', inset: 0, margin: 'auto', height: 'fit-content', width: '90%', 
-            border: '1px solid var(--danger)', zIndex: 100,
-            background: '#2d1b4e'
-          }}>
-            <h3>Skip Round?</h3>
-            <p>Pick a new word and restart round?</p>
-            <div style={{ display: 'flex', gap: '10px', justifyContent:'center' }}>
-              <button 
-                className="danger" style={{background: 'var(--danger)'}}
-                onClick={() => { onSkip(); setShowSkipConfirm(false); }}
-              >Yes</button>
-              <button className="secondary" onClick={() => setShowSkipConfirm(false)}>Cancel</button>
+        {showSkipConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+            <div className="bg-white p-6 w-full max-w-sm rounded-sm shadow-xl">
+              <h3 className="text-xl font-bold text-primary mb-2">
+                Skip Round?
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Pick a new word and restart round?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  className="flex-1 bg-primary text-white py-3 font-bold rounded-sm hover:bg-red-700"
+                  onClick={() => {
+                    onSkip();
+                    setShowSkipConfirm(false);
+                  }}
+                >
+                  Yes
+                </button>
+                <button
+                  className="flex-1 border border-gray-300 text-gray-600 py-3 font-bold rounded-sm hover:bg-gray-50"
+                  onClick={() => setShowSkipConfirm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-        ) : null}
+        )}
 
         {/* Home Modal */}
-        {showHomeConfirm ? (
-          <div className="glass-panel" style={{ 
-             position: 'absolute', inset: 0, margin: 'auto', height: 'fit-content', width: '90%', 
-             border: '1px solid var(--text-secondary)', zIndex: 100,
-             background: '#2d1b4e'
-           }}>
-             <h3>Exit to Home?</h3>
-             <p>Game progress will be paused.</p>
-             <div style={{ display: 'flex', gap: '10px', justifyContent:'center' }}>
-               <button 
-                 style={{background: 'var(--text-secondary)', color: 'black'}}
-                 onClick={() => { onHome(); setShowHomeConfirm(false); }}
-               >Yes, Exit</button>
-               <button className="secondary" onClick={() => setShowHomeConfirm(false)}>Cancel</button>
-             </div>
-           </div>
-        ) : null}
+        {showHomeConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+            <div className="bg-white p-6 w-full max-w-sm rounded-sm shadow-xl">
+              <h3 className="text-xl font-bold text-primary mb-2">
+                Exit to Home?
+              </h3>
+              <p className="text-gray-600 mb-6">Game progress will be lost.</p>
+              <div className="flex gap-3">
+                <button
+                  className="flex-1 bg-black text-white py-3 font-bold rounded-sm hover:bg-gray-800"
+                  onClick={() => {
+                    onHome();
+                    setShowHomeConfirm(false);
+                  }}
+                >
+                  Yes, Exit
+                </button>
+                <button
+                  className="flex-1 border border-gray-300 text-gray-600 py-3 font-bold rounded-sm hover:bg-gray-50"
+                  onClick={() => setShowHomeConfirm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
-
-        <button onClick={onNext} className="secondary" style={{ border: '2px solid white' }}>
+        <button
+          onClick={onNext}
+          className="w-full py-4 border-2 border-primary text-primary font-bold uppercase tracking-wider rounded-sm hover:bg-red-50 transition-colors"
+        >
           Done / Next Player &gt;&gt;
         </button>
-        
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            onClick={() => setShowSkipConfirm(true)} 
-            className="secondary" 
-            style={{ borderColor: 'var(--danger)', color: 'var(--danger)', fontSize: '0.9rem', padding: '10px', flex: 1 }}
+
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowSkipConfirm(true)}
+            className="flex-1 py-3 text-sm font-bold text-gray-400 hover:text-primary transition-colors uppercase tracking-wide border border-transparent hover:border-gray-200 rounded-sm"
           >
             Skip Round
           </button>
-          <button 
-             onClick={() => setShowHomeConfirm(true)}
-             className="secondary" 
-             style={{ borderColor: 'var(--text-secondary)', color: 'var(--text-secondary)', fontSize: '0.9rem', padding: '10px', flex: 1 }}
+          <button
+            onClick={() => setShowHomeConfirm(true)}
+            className="flex-1 py-3 text-sm font-bold text-gray-400 hover:text-primary transition-colors uppercase tracking-wide border border-transparent hover:border-gray-200 rounded-sm"
           >
             Home
           </button>
@@ -118,6 +172,6 @@ const RevealScreen = ({ player, role, wordData, onNext, onSkip, onHome }) => {
       </div>
     </div>
   );
-}; // End Component
+};
 
 export default RevealScreen;
