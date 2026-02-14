@@ -59,8 +59,18 @@ const WelcomeScreen = ({ onStart, onReset }) => {
         </div>
       </div>
 
-      <div className="mt-auto pt-8 text-xs text-gray-400">
-        Design by <span className="font-bold text-gray-500">DAMA</span>
+      <div className="mt-auto pt-8 text-xs text-center">
+        <div className="text-gray-400">
+          Developed by <span className="font-bold text-gray-500">DAMA</span>
+        </div>
+        <a
+          href="https://github.com/DahamDissanayake/Imposter-Game-But-Customized-V2"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-300 hover:text-primary transition-colors mt-2 inline-block border-b border-gray-200 hover:border-primary pb-0.5"
+        >
+          View Source Code
+        </a>
       </div>
     </div>
   );
