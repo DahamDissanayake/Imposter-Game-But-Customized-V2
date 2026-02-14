@@ -5,8 +5,13 @@ const WelcomeScreen = ({ onStart, onReset }) => {
 
   return (
     <div className="w-full max-w-md flex flex-col items-center justify-center space-y-12 animate-fade-in">
-      <h1 className="text-6xl font-extrabold text-primary tracking-tighter">
-        IMPOSTER
+      <h1 className="text-center flex flex-col items-center">
+        <span className="text-6xl font-extrabold text-primary tracking-tighter">
+          IMPOSTER GAME
+        </span>
+        <span className="text-2xl font-bold text-gray-400 tracking-widest mt-2">
+          BUT CUSTOMIZED
+        </span>
       </h1>
 
       <div className="flex flex-col gap-6 w-full">
